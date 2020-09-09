@@ -1,0 +1,29 @@
+body{
+    min-height: 100vh;
+    background: linear-gradient(90deg,#52c4df,#ad55d1) center center no-repeat;
+    background-size: cover;
+}
+
+
+#formularioSeccion{
+    margin-top: 50px;
+    position: absolute;
+    background:rgba(0, 0, 0, 0.5)
+}
+
+
+#carta{
+    margin-top: 10px;
+    background: rgba(0, 0, 0, 0.5)
+}
+
+/*#secciontabla{
+    margin-top: 50px;
+}
+*/
+#container{
+    margin-top: 50px;
+}
+#containerObras{
+    margin-top: 100px;
+}

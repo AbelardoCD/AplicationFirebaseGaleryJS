@@ -1,0 +1,114 @@
+<!doctype <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Arte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="recursos/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+
+
+
+
+    <div class="container-fluid" id="container">
+        <div class="row align-items-center vh-100 justify-content-center">
+            <div class="col-md-4" id="formularioSeccion">
+
+                <form role="form" id="formDatos" name="formDatos" data-toggle="validator">
+                    <div class="form-group">
+                        <div>
+                            <h5>Da clic al bóton seleccionar para elegir la manera de subir la imagen</h5>
+                        </div>
+                        <div id="seccionImgUrl">
+                            <label class="col-form-label text-white"> Imagen por url</label>
+                            <div class="row">
+                                <label id="btnSeleccionarUrl" class="col-md-2 btn btn-success">Seleccionar</label>
+                                <input class="col-md-10 form-control input-group-sm " type="text" id="url" disabled placeholder="URL">
+                            </div>
+                        </div>
+
+                        <div id="seccionImgFile">
+                            <label class="col-form-label text-white"> Imagen por archivo</label>
+                            <div class="row">
+                                <label id="btnSeleccionarFile" class="col-md-2 btn btn-success">Seleccionar</label>
+                                <input class="col-md-10 form-control input-group-sm " type="file" id="imgFile" disabled placeholder="URL">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label text-white"> Nombre</label>
+                        <input class="form-control input-group-sm" id="nombre" type="text" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label text-white "> Autor</label>
+                        <input class="form-control input-group-sm" type="text" id="autor" placeholder="Autor">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label text-white "> Descripcion</label>
+                        <input class="form-control input-group-sm" type="text" id="descripcion" placeholder="Descripcion">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label text-white ">Selecciona el movimiento</label>
+                        <select class="form-control" id="comboMovimiento"></select>
+                    </div>
+                </form>
+                <div class="m-4">
+                    <button id="btnGuardar" class="btn btn-primary">Guardar</button>
+                    <button id="btnCancelar" class="btn btn-danger">Cancelar</button>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="container" id="containerObras">
+
+        <div class="row " id="secciontabla">
+
+
+        </div>
+    </div>
+
+    <!--CONFIGURACIONES FIREBASE TENER CUIDADO-->
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAEQu76y2fSgtvt7fCl_a1SmYFxJbJvZec",
+            authDomain: "aplicationfirebase-62637.firebaseapp.com",
+            databaseURL: "https://aplicationfirebase-62637.firebaseio.com",
+            projectId: "aplicationfirebase-62637",
+            storageBucket: "aplicationfirebase-62637.appspot.com",
+            messagingSenderId: "473782001100",
+            appId: "1:473782001100:web:67c3fe6b15dd1570cd1169",
+            measurementId: "G-RP4C6399T5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+    <script src="recursos/jquery/jquery.min.js "></script>
+
+    <script src="index.js "></script>
+
+</body>
+
+</html>
