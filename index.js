@@ -1,38 +1,48 @@
 var db = "";
-
+var fileGlobal = "";
+var storageService = "";
+var banderaImagenPorUrl = false;
+/* se coloca como global ya que cambiara dependiendo si la url es directa o es obtenida despues de subir una imagen */
+var urlGlobal = ""
 $(document).ready(function () {
+
+    if (window.localStorage.getItem('emailUser') == "" || window.localStorage.getItem('emailUser') == null || window.localStorage.getItem('emailUser') == undefined) {
+        window.location = "login.html";
+    } else {
     botonesImg();
+    cerrarSesion();
+    var user = window.localStorage.getItem('emailUser');
 
+    $("#user").text(user)
     db = firebase.database().ref("obras");
-
+    storageService = firebase.storage();
+    capturamosImagen();
     traerDatos();
-    getdatos();
+
     comboMovimientos();
+    subirRegistroSeleccion();
+
+
+    eliminarImagenDeStorage();
+
+    }
 });
 
-function getdatos() {
+function subirRegistroSeleccion() {
 
     $("#btnGuardar").click(function () {
-        console.log("guardar");
 
-        var ref = db
-        var id = ref.push()
-        console.log(id.getKey())
-        var idRegistro = id.getKey()
-        var idMovimiento = $("#comboMovimiento").val();
-        db.child(idRegistro).set({
-            autor: $("#autor").val(),
-            descripcion: $("#descripcion").val(),
-            id: idRegistro,
-            nombre: $("#nombre").val(),
-            url: $("#url").val()
+        if (banderaImagenPorUrl == true) {
+            console.log("directo subir registro");
+            urlGlobal = $("#url").val();
+            subirRegistro();
+        } else {
+            console.log("se dispara subir archivo");
 
-        });
+            subirArchivo(fileGlobal);
+        }
 
-        asignarMovimientoAObra(idRegistro, idMovimiento);
-        traerDatos();
     });
-
 
 }
 function asignarMovimientoAObra(idObra, idmovimiento) {
@@ -43,7 +53,7 @@ function asignarMovimientoAObra(idObra, idmovimiento) {
 }
 function traerDatos() {
 
-    $("#secciontabla").children("tr").remove()
+
     db.on("value", function (data) {
 
         var datos = data.val()
@@ -55,7 +65,7 @@ function traerDatos() {
             tr += " <div class='card col-md-4   align-items-center' id='carta'>";
             tr += " <div class='card-header'>";
             tr += "    <div>";
-            tr += "        <label class='text-center text-white' col-form-label id='tituloTxtLabel'>" + value.nombre + "</label>";
+            tr += "        <label class=' text-white' col-form-label id='tituloTxtLabel'>" + value.nombre + "</label>";
 
             tr += "    </div>";
             tr += "    <div>";
@@ -71,18 +81,21 @@ function traerDatos() {
 
             tr += "  <div class='col-md-6 ' >";
             tr += "        <img class='align='center' src='" + value.url + "'  width='100%' heigh='100px' alt='card image'>";
-            tr+="</div>";
+            tr += "</div>";
             tr += " <div class='col-md-3'></div>";
 
             tr += "              </div>";
-            tr +="<div style='margin-top:15px;'>"
+            tr += "<div style='margin-top:15px;'>"
             tr += "    <div id='Layer1' class='overflow-auto' style='width:100%; height:200px; overflow: scroll;' >";
             tr += "        <p class='p-0 text-white' id='descripciontxtCard' style='margin-top:10px;'>" + value.descripcion + "</p>";
             tr += "    </div>";
-            tr+="</div>"
+            tr += "</div>"
+
             tr += " </div>";
 
-
+            tr += "<div  class='row' style='margin-top:10px;'>";
+            tr += "<label class='btn btn-danger' id='" + value.id + "' data-movimiento='" + value.idMovimiento + "' data-url =" + value.url + " onClick='eliminarRegistro(this)')>Eliminar</label>"
+            tr += "</div>"
 
 
             tr += " </div>";
@@ -114,7 +127,31 @@ function comboMovimientos() {
     });
 }
 
-function subirImagen() {
+
+
+function botonesImg() {
+    $("#btnSeleccionarUrl").click(function () {
+
+        $("#url").attr("disabled", false);
+        $("#seccionImgFile").hide();
+        banderaImagenPorUrl = true;
+
+    });
+
+    $("#btnSeleccionarFile").click(function () {
+
+        $("#imgFile").attr("disabled", false);
+        $("#seccionImgUrl").hide();
+        banderaImagenPorUrl = false;
+
+    });
+}
+
+
+
+function capturamosImagen() {
+
+
     $("#imgFile").on('change', function () {
 
         var file;
@@ -123,19 +160,120 @@ function subirImagen() {
             fileGlobal = file;
 
         }
+
+
+    });
+}
+function subirArchivo(archivo) {
+    console.log("archivo desde subir  " + archivo);
+    // creo una referencia al lugar donde guardaremos el archivo
+    var refStorage = storageService.ref('imagesObras').child(archivo.name);
+    // Comienzo la tarea de upload
+    var uploadTask = refStorage.put(archivo);
+
+    // defino un evento para saber qué pasa con ese upload iniciado
+    uploadTask.on('state_changed', null,
+        function (error) {
+            console.log('Error al subir el archivo', error);
+        },
+        function () {
+            console.log('img subida completada');
+
+            var url = uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+                urlGlobal = url;
+
+                subirRegistro()
+
+
+
+            });
+
+        }
+    );
+}
+
+function subirRegistro() {
+    var nombre = $("#nombre").val();
+    var autor = $("#autor").val();
+    var descripcion = $("#descripcion").val();
+    var idMovimiento = $("#comboMovimiento").val();
+
+
+    var ref = db
+    var id = ref.push()
+    console.log(id.getKey())
+    var idRegistro = id.getKey()
+    db.child(idRegistro).set({
+        autor: autor,
+        descripcion: descripcion,
+        id: idRegistro,
+        nombre: nombre,
+        url: urlGlobal,
+        idMovimiento: idMovimiento
+    });
+
+    asignarMovimientoAObra(idRegistro, idMovimiento);
+
+    $("#secciontabla").children("div").remove();
+    traerDatos();
+
+}
+
+function eliminarRegistro(idRegistro) {
+    var id = idRegistro.id;
+    var idMov = $("#" + id).attr("data-movimiento");
+    var url = $("#" + id).attr("data-url");
+    console.log("url elimibnar... " + url)
+
+    db.child(id).remove().then(function () {
+
+
+        eliminarRelacionColeccionMovimiento(idMov, id, url);
+    }).catch(function (error) {
+        console.error("Error removing document: ", error);
     });
 }
 
-function botonesImg() {
-    $("#btnSeleccionarUrl").click(function () {
-        console.log("desde btn");
-        $("#url").attr("disabled", false);
-        $("#seccionImgFile").hide();
+function eliminarRelacionColeccionMovimiento(idMov, idObra, url) {
+    var ref = firebase.database().ref("movimiento").child(idMov).child("obrasAsignadas").child(idObra).remove().then(function () {
+
+        eliminarImagenDeStorage(url);
+    }).catch(function (error) {
+        console.error("Error removing document: " + error);
+    });
+}
+
+
+function eliminarImagenDeStorage(url) {
+    var img = url;
+    var refStorage = storageService.refFromURL(img);
+
+    refStorage.delete().then(function () {
+        $("#secciontabla").children("div").remove();
+        traerDatos();
+        alert("Registro eliminado");
+
+
+    }).catch(function (error) {
+        $("#secciontabla").children("div").remove();
+        traerDatos();
+        alert("error" + error);
+
     });
 
-    $("#btnSeleccionarFile").click(function () {
-        console.log("desde btn");
-        $("#imgFile").attr("disabled", false);
-        $("#seccionImgUrl").hide();
+
+}
+
+function cerrarSesion(){
+
+    $("#btnCerrarSesion").click(function () {
+    
+        console.log("remove sesion");
+       
+        window.localStorage.removeItem('emailUser');
+       
+        window.location = "login.html";
+       
+
     });
 }

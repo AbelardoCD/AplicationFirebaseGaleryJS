@@ -1,0 +1,80 @@
+<!doctype <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Arte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="recursos/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+
+
+
+
+    <div class="container-fluid" id="container">
+        <div class="row align-items-center vh-100 justify-content-center">
+            <div class="col-md-4" id="formularioSeccion">
+
+                <form role="form" id="formDatos" name="formDatos" data-toggle="validator">
+
+
+                    <div class="form-group">
+                        <label class="col-form-label text-white"> Email</label>
+                        <input class="form-control input-group-sm" id="email" type="text" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label text-white "> Password</label>
+                        <input class="form-control input-group-sm" type="password" id="password" placeholder="Autor">
+                    </div>
+
+                </form>
+                <div class="m-4">
+                    <button id="btnLogin" class="btn btn-primary">ingresa</button>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!--CONFIGURACIONES FIREBASE TENER CUIDADO-->
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAEQu76y2fSgtvt7fCl_a1SmYFxJbJvZec",
+            authDomain: "aplicationfirebase-62637.firebaseapp.com",
+            databaseURL: "https://aplicationfirebase-62637.firebaseio.com",
+            projectId: "aplicationfirebase-62637",
+            storageBucket: "aplicationfirebase-62637.appspot.com",
+            messagingSenderId: "473782001100",
+            appId: "1:473782001100:web:67c3fe6b15dd1570cd1169",
+            measurementId: "G-RP4C6399T5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+    <script src="recursos/jquery/jquery.min.js "></script>
+
+    <script src="login.js "></script>
+
+</body>
+
+</html>
