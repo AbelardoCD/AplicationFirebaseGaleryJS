@@ -22,9 +22,9 @@ function login(email, password) {
         .then(function () {
 
             window.localStorage.setItem('emailUser', email);
-            window.location = "index.html";
+            window.location = "inicio.html";
         })
         .catch(function (error) {
-            console.log("Error......." + error)
+            alert("Se ha presentado un error...")
         });
 }

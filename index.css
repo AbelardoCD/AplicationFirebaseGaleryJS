@@ -6,24 +6,38 @@ body{
 
 
 #formularioSeccion{
-    margin-top: 50px;
+    
     position: absolute;
     background:rgba(0, 0, 0, 0.5)
 }
 
 
 #carta{
-    margin-top: 10px;
-    background: rgba(0, 0, 0, 0.5)
+    
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+
 }
 
-/*#secciontabla{
-    margin-top: 50px;
+#headerSection{
+    
 }
-*/
+
 #container{
-    margin-top: 120px;
+   margin-top: 20px;
 }
 #containerObras{
-    margin-top: 170px;
+    margin-top: 130px;
 }
+
+#containerlogin{
+    
+}
+#imgFondo{
+    
+}
+#formulario{
+   
+}
+
+

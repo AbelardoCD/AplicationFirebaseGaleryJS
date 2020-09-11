@@ -9,21 +9,43 @@ $(document).ready(function () {
     if (window.localStorage.getItem('emailUser') == "" || window.localStorage.getItem('emailUser') == null || window.localStorage.getItem('emailUser') == undefined) {
         window.location = "login.html";
     } else {
-    botonesImg();
-    cerrarSesion();
-    var user = window.localStorage.getItem('emailUser');
+        $("#formulario").hide();
+        botonesImg();
+        cerrarSesion();
+        $("#btnNuevaObra").click(function () {
 
-    $("#user").text(user)
-    db = firebase.database().ref("obras");
-    storageService = firebase.storage();
-    capturamosImagen();
-    traerDatos();
-
-    comboMovimientos();
-    subirRegistroSeleccion();
+            $("#formulario").show();
 
 
-    eliminarImagenDeStorage();
+        });
+        $("#btnCancelar").click(function () {
+
+            $("#formulario").hide();
+
+
+        });
+        $("#btnMovimientos").click(function () {
+
+            window.location ="movimiento.html";
+
+
+        });
+        var user = window.localStorage.getItem('emailUser');
+
+        $("#user").text(user)
+        db = firebase.database().ref("obras");
+        storageService = firebase.storage();
+        capturamosImagen();
+        traerDatos();
+
+        comboMovimientos();
+        subirRegistroSeleccion();
+
+
+        eliminarImagenDeStorage();
+
+
+
 
     }
 });
@@ -62,43 +84,21 @@ function traerDatos() {
             //   console.log(value.nombre)
             var tr = "";
 
-            tr += " <div class='card col-md-4   align-items-center' id='carta'>";
-            tr += " <div class='card-header'>";
-            tr += "    <div>";
-            tr += "        <label class=' text-white' col-form-label id='tituloTxtLabel'>" + value.nombre + "</label>";
-
-            tr += "    </div>";
-            tr += "    <div>";
-            tr += "        <label class='col-form-label text-white' id='autorTxtLabel'>" + value.autor + "</label>";
-
-            tr += "    </div>";
-
-            tr += " </div>";
-
-            tr += " <div class='card-body'>";
-            tr += "    <div class='row'>";
-            tr += "  <div class='col-md-3'></div>";
-
-            tr += "  <div class='col-md-6 ' >";
-            tr += "        <img class='align='center' src='" + value.url + "'  width='100%' heigh='100px' alt='card image'>";
+            tr += " <div class='row mt-1'id='carta'>";
+            tr += "  <div class='col-md-4 mt-2 mb-2'>";
+            tr += "     <img width='70%' src='" + value.url + "' >";
+            tr += "   </div>";
+            tr += "  <div class='col-md-8 mt-3'>";
+            tr += "      <label class='col-form-label font-italic text-white text-xl-center'>" + value.nombre + "</label>";
+            tr += "<div id='Layer1' class='overflow-auto' style='width:100%; height:200px; overflow: scroll;' >";
+            tr += "      <p class='text-justify text-white p-2'>" + value.descripcion + "</p>";
             tr += "</div>";
-            tr += " <div class='col-md-3'></div>";
-
-            tr += "              </div>";
-            tr += "<div style='margin-top:15px;'>"
-            tr += "    <div id='Layer1' class='overflow-auto' style='width:100%; height:200px; overflow: scroll;' >";
-            tr += "        <p class='p-0 text-white' id='descripciontxtCard' style='margin-top:10px;'>" + value.descripcion + "</p>";
-            tr += "    </div>";
-            tr += "</div>"
-
-            tr += " </div>";
-
             tr += "<div  class='row' style='margin-top:10px;'>";
-            tr += "<label class='btn btn-danger' id='" + value.id + "' data-movimiento='" + value.idMovimiento + "' data-url =" + value.url + " onClick='eliminarRegistro(this)')>Eliminar</label>"
+            tr += "<label class='btn btn-danger ' id='" + value.id + "' data-movimiento='" + value.idMovimiento + "' data-url =" + value.url + " onClick='eliminarRegistro(this)')>Eliminar</label>"
             tr += "</div>"
+            tr += "   </div>";
+            tr += "  </div>";
 
-
-            tr += " </div>";
 
             $('#secciontabla').append(tr);
 
@@ -216,7 +216,7 @@ function subirRegistro() {
 
     $("#secciontabla").children("div").remove();
     traerDatos();
-
+    $("#formulario").hide();
 }
 
 function eliminarRegistro(idRegistro) {
@@ -264,16 +264,16 @@ function eliminarImagenDeStorage(url) {
 
 }
 
-function cerrarSesion(){
+function cerrarSesion() {
 
     $("#btnCerrarSesion").click(function () {
-    
+
         console.log("remove sesion");
-       
+
         window.localStorage.removeItem('emailUser');
-       
+
         window.location = "login.html";
-       
+
 
     });
 }
